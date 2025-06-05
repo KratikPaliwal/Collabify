@@ -25,7 +25,6 @@ app.use(express.urlencoded({ extended : true, limit : '16kb'}));
 // to keep them in public folder which is to keep with user
 // app.use(express.static());
 
-
 // user ke browser se cookie set bhi kr do aur access bhi kr lo
 // jisko sirf server hi pad pata hai
 app.use(cookieParser());

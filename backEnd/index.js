@@ -1,1 +1,0 @@
-const vari="Hello World!"
