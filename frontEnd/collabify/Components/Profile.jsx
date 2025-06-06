@@ -1,13 +1,23 @@
-import React, { useState } from "react";
-import { Pencil } from "lucide-react"; // Optional: using lucide-react icons
-
+import React, { useState, useEffect, useRef } from "react";
+import { Pencil } from "lucide-react"; 
 function Profile() {
   const defaultImage = "Images/profile.jpeg";
-  const [image, setImage] = useState(defaultImage);
-  const [showModal, setShowModal] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
+  const fileInputRef = useRef(null);
 
-  // Profile data
+  // Load profile data and image from localStorage if available
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("profileData");
+    const storedImage = localStorage.getItem("profileImage");
+    if (storedProfile) {
+      setProfileData(JSON.parse(storedProfile));
+      setFormData(JSON.parse(storedProfile));
+    }
+    if (storedImage) {
+      setImage(storedImage);
+    }
+  }, []);
+
+
   const [profileData, setProfileData] = useState({
     name: "Kratik Paliwal",
     headline: "Full Stack",
@@ -16,18 +26,26 @@ function Profile() {
   });
 
   const [formData, setFormData] = useState({ ...profileData });
+  const [image, setImage] = useState(defaultImage);
+  const [showModal, setShowModal] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setImage(imageURL);
-      setShowModal(false);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+        localStorage.setItem("profileImage", reader.result);
+        setShowModal(false);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleDeletePhoto = () => {
     setImage(defaultImage);
+    localStorage.removeItem("profileImage");
     setShowModal(false);
   };
 
@@ -38,6 +56,7 @@ function Profile() {
 
   const handleSave = () => {
     setProfileData(formData);
+    localStorage.setItem("profileData", JSON.stringify(formData));
     setShowEditForm(false);
   };
 
@@ -53,9 +72,18 @@ function Profile() {
               onClick={() => setShowModal(true)}
               className="h-32 w-32 rounded-full object-cover border-2 border-blue-400 shadow-lg cursor-pointer"
             />
+            <input
+              type="file"
+              id="profileImage"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+              ref={fileInputRef}
+            />
             <label
               htmlFor="profileImage"
               className="absolute bottom-1 right-1 bg-blue-500 text-white text-xs px-2 py-1 rounded cursor-pointer hover:bg-blue-600"
+              onClick={() => fileInputRef.current && fileInputRef.current.click()}
             >
               Change
             </label>
