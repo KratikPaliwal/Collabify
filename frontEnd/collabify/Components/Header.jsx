@@ -1,6 +1,7 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
+import {NavLink,Link} from 'react-router-dom'
 
 function Header() {
   return (
@@ -14,9 +15,13 @@ function Header() {
         />
       </div>
       <div className="flex gap-6 text-gray-700">
-        <p className="cursor-pointer hover:text-blue-500">Home</p>
-        <p className="cursor-pointer hover:text-blue-500">Projects</p>
-        <p className="cursor-pointer hover:text-blue-500">Matches</p>
+        <NavLink to='/' className={({isActive})=>{
+          return `bg-white ${isActive ?'text-blue-600':'text-black'}`
+        }}>Home</NavLink>
+        <NavLink to='/project' className={({isActive})=>{
+          return `bg-white ${isActive ?'text-blue-600':'text-black'}`
+        }}>Project</NavLink>
+
         <div className="relative inline-block">
           <div className="hover:text-blue-500 hover:bg-gray-100 hover:scale-105 transition rounded-full p-2 relative bottom-0 ">
             <FaBell className="text-[20px]" />
@@ -25,10 +30,9 @@ function Header() {
             1
           </span>
         </div>
-
-        <div className="hover:text-blue-500 hover:bg-gray-100 hover:scale-105 transition ">
-          <FaUser className="text-[20px]" />
-        </div>
+        <NavLink to='/user' className={({isActive})=>{
+          return `bg-white ${isActive ?'text-blue-600':'text-black'}`
+        }}><FaUser className="text-[20px]" /></NavLink>
         <div></div>
       </div>
     </div>
