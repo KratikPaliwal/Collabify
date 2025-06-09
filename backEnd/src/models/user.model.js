@@ -1,10 +1,11 @@
 // require mongoose package : to interact with database
 const mongoose = require('mongoose');
-const { required } = require('zod/v4-mini');
+const { required, email } = require('zod/v4-mini');
 // require Schema to create model
 const { Schema } = require('mongoose');
 
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({
     username : {
@@ -32,7 +33,7 @@ const userSchema = new Schema({
     },
     password : {
         type : String,
-        required : [, "passward is required"]
+        required : [6, "passward is required"]
     },
     refreshToken : {
         type : String
@@ -63,6 +64,33 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 8);
     next();
 })
+
+userSchema.methods.isPasswardCorrect = async function(passward){
+    return await bcrypt.compare(passward, this.passward);
+}
+
+userSchema.methods.generateAccessToken = function() {
+    return jwt.sign({
+        _id : this._id,
+        email : this.email,
+        fullName : this.fullName,
+        username : this.username
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+        expiresIn : process.env.ACCESS_TOKEN_EXPIRE
+    })
+}
+
+userSchema.methods.generateRefreshToken = function() {
+    return jwt.sign({
+        _id : this._id
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+        expiresIn : process.env.REFRESH_TOKEN_EXPIRE
+    })
+}
 
 const User = mongoose.model('users', userSchema);
 

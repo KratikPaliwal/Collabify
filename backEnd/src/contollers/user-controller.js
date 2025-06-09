@@ -5,6 +5,29 @@ const { User } = require('../models/user.model.js');
 const { z } = require('zod');
 const { uploadOnCloudinary } = require('../utils/cloudinary.js');
 
+const generateAccessAndRefreshToken = async (userId) => {
+    try {
+        // user ko find krna pde gai 
+        // then usko token generate krna pde gai
+
+        const user = await User.findById(userId);
+
+        // token generate ho gye
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generaterefreshToken();
+
+        // then refreshToken ko save krna hai
+        user.refreshToken = refreshToken;
+
+        await user.save({ validateBeforeSave : false});
+
+        return { accessToken, refreshToken};
+        
+    } catch (error) {
+        throw new ApiError(500, "Something went wrong while creating a token");
+    }
+}
+
 const registerUser = asyncHandler (async(req, res) => {
     // user ki details lenge header(body) se
     // then usko check kre gai ki using zod
