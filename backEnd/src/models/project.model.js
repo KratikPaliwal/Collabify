@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const { Schema } = require('mongoose');
+const { required } = require('zod/v4-mini');
 
 const projectSchema = new Schema({
     title : {
@@ -20,7 +21,8 @@ const projectSchema = new Schema({
     },
     requiredRoles : [
         {
-            type : String
+            type : String,
+            required : true
         }
     ]
 }, {

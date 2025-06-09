@@ -1,7 +1,10 @@
 // require mongoose package : to interact with database
 const mongoose = require('mongoose');
+const { required } = require('zod/v4-mini');
 // require Schema to create model
-const { Schema } = reqiure('mongoose');
+const { Schema } = require('mongoose');
+
+const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
     username : {
@@ -27,7 +30,7 @@ const userSchema = new Schema({
     avatar : {
         type : String // cloudinary url 
     },
-    passward : {
+    password : {
         type : String,
         required : [, "passward is required"]
     },
@@ -39,7 +42,7 @@ const userSchema = new Schema({
         required : true,
         index : true
     },
-    skill : [
+    skills : [
         {
             type : String,
             required : true,
@@ -49,6 +52,17 @@ const userSchema = new Schema({
 }, {
     timestamps : true
 });
+
+userSchema.pre('save', async function (next) {
+
+    // check if user these password or not
+    if (!this.isModified('password')) {
+        return next();
+    }
+
+    this.password = await bcrypt.hash(this.password, 8);
+    next();
+})
 
 const User = mongoose.model('users', userSchema);
 

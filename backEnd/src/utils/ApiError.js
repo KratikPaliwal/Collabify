@@ -9,7 +9,7 @@ class ApiError extends Error {
         this.data = null // neccessary to send null
         this.message = message,
         this.success = false, //message jyega but it is success flag jaise jyega
-        this.errors = errors // error btata hai
+        this.errors = error // error btata hai
 
         if (stack) {
             this.stack = stack
