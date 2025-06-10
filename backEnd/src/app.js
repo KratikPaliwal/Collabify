@@ -24,11 +24,11 @@ app.use(cors({
 // to parse incoming request with content and makes them in json of req.body
 // limit the size of request
 // by default it is 100kb
-app.use(express.json({ limit : '16kb' }));
+app.use(express.json());
 
 
 // to encode data from url
-app.use(express.urlencoded({ extended : true, limit : '16kb'}));
+app.use(express.urlencoded({ extended : true}));
 
 // it is used for serving static files like fonts, html, js etc.
 // to keep them in public folder which is to keep with user
