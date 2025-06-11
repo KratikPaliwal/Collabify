@@ -27,9 +27,6 @@ router.delete('/:projectId', deleteProject);
 router.post('/:projectId/add-member', addMemberToProject);
 router.post('/:projectId/remove-member', removeMemberFromProject);
 
-// User's projects
-router.get('/user/:userId', getProjectsOfUser);
-
 module.exports = {
     projectRouter : router
 }

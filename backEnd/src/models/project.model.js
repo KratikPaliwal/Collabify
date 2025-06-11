@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const { Schema } = require('mongoose');
-const { required } = require('zod/v4-mini');
 
 const projectSchema = new Schema({
     title : {

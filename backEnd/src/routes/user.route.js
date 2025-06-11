@@ -6,7 +6,7 @@ const { registerUser,
         loginUser,
         logoutUser,
         getCurrentUser,
-        changeCurrentPassward,
+        changeCurrentPassword,
         updateAccountDetails,
         searchUsers,
         getAllUsers,
@@ -32,7 +32,7 @@ router.use(verifyJWT);
 // Protected Routes
 router.post('/logout', logoutUser);
 router.get('/current-user', getCurrentUser);
-router.put('/change-password', changeCurrentPassward);
+router.put('/change-password', changeCurrentPassword);
 router.put('/update', Upload.none(), updateAccountDetails); // For updating info only (no files)
 router.get('/search', searchUsers);
 router.get('/', getAllUsers);

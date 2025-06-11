@@ -2,9 +2,12 @@ const { asyncHandler } = require('../utils/asyncHandler.js');
 const { ApiResponse } = require('../utils/ApiResponse.js');
 const { ApiError } = require('../utils/ApiError.js');
 const { User } = require('../models/user.model.js');
+const { Project } = require('../models/project.model.js');
+const { Post } = require('../models/posts.model.js');
+const { Like } = require('../models/like.model.js');
+const { Comment } = require('../models/comment.model.js');
 const { z } = require('zod');
 const { uploadOnCloudinary } = require('../utils/cloudinary.js');
-const { email } = require('zod/v4-mini');
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -188,8 +191,12 @@ const loginUser = asyncHandler (async (req, res) => {
 const logoutUser = asyncHandler (async (req, res) => {
     // cookie and refreshToken clear krna pade gai
 
+    const userId = req.user._id;
+
     await User.findOneAndUpdate(
-        req.user._id, // user phele se login hoga
+        {
+            _id : userId
+        }, // user phele se login hoga
         {
             $unset : {
                 refreshToken : 1
@@ -227,7 +234,7 @@ const getCurrentUser = asyncHandler (async (req, res) => {
     );
 })
 
-const changeCurrentPassward = asyncHandler (async (req, res) => {
+const changeCurrentPassword = asyncHandler (async (req, res) => {
     // oldPassword and new password lenge body se
     // then user ko find kre gai
     // then uske old password and olpassword body se aaya hai dono compare kre gai
@@ -275,9 +282,10 @@ const updateAccountDetails = asyncHandler( async (req, res) => {
         throw new ApiError(400, "All fields are required");
     }
 
-    if (!skills && !Array.isArray(skills)) {
+    if (!Array.isArray(skills) || skills.length === 0) {
         throw new ApiError(400, "skills field is required");
     }
+
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
@@ -338,11 +346,13 @@ const getUserById = asyncHandler( async (req, res) => {
 
 const getSuggestedUsers = asyncHandler( async (req, res) => {
 
+    const userId = req.user._id;
+
     const user = await User.aggregate([
         {
             $match : {
                 _id : {
-                    $ne : req.user?._id
+                    $ne : userId
                 }
             }
         },
@@ -363,14 +373,97 @@ const getSuggestedUsers = asyncHandler( async (req, res) => {
 })
 
 const deleteUser = asyncHandler( async (req, res) => {
+    // user login rhe gai
+    // then user find kre gai
+    // then usko delete kr denge
+    // and delete uske saare created projects, posts, comment, like delete kr do
+    // return res
 
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+        throw new ApiError(401, "User not found");
+    }
+
+    // delete user posts
+    await Post.deleteMany({ authorId : userId });
+
+    // delete user projects
+    await Project.deleteMany({ creator : userId });
+
+    // delete user likes
+    await Like.deleteMany({ likedBy : userId });
+
+    // delete user comments
+    await Comment.deleteMany({ authorId : userId })
+
+    // delete avatar from cloudinary
+    if (user.avatar && user.avatar.public_id) {
+        try {
+            await cloudinary.uploader.destroy(user.avatar.public_id);
+        } catch (error) {
+            console.error("Error deleting avatar from Cloudinary:", error.message);
+        }
+    }
+
+    // delete user
+    await user.deleteOne();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Successfully deleted User"
+        )
+    )
 })
 
 const getUserProjects = asyncHandler( async (req, res) => {
-    
+    // user phele se login hai
+    // then find Project of user
+    // if project no found that means user haven't enroll in any of projects
+    // return Projects of user
+
+    const userId = req.user._id;
+
+    const projects = await Project.find({ creator : userId });
+
+    if (!projects || projects.length === 0) {
+        throw new ApiError(404, "User haven't created or enroll in any project");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            projects,
+            "successfully frtched projects of user"
+        )
+    );
 })
 
 const searchUsers = asyncHandler ( async (req, res) => {
+    // params mai id aaye gi ki kis user ko find krna hai
+    // then we find that user 
+    // if finded then return
+    // else through error
+
+    const userId = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+        throw new ApiError(401, "User not found");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            user,
+            "Successfully found User"
+        )
+    );
 
 })
 
@@ -380,7 +473,7 @@ module.exports = {
     loginUser,
     logoutUser,
     getCurrentUser,
-    changeCurrentPassward,
+    changeCurrentPassword,
     updateAccountDetails,
     searchUsers,
     getAllUsers,

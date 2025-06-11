@@ -31,10 +31,6 @@ const removeMemberFromProject = asyncHandler( async (req, res) => {
 
 })
 
-const getProjectsOfUser = asyncHandler( async (req, res) => {
-
-})
-
 const searchProject = asyncHandler( async (req, res) => {
 
 })
