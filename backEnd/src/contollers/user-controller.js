@@ -449,7 +449,7 @@ const searchUsers = asyncHandler ( async (req, res) => {
     // if finded then return
     // else through error
 
-    const userId = req.params;
+    const { userId } = req.params;
 
     const user = await User.findById(userId);
 

@@ -5,7 +5,7 @@ const { Post } = require('../models/posts.model.js');
 
 
 const createPost = asyncHandler( async (req, res) => {
-
+    // 
 })
 
 const getPostById = asyncHandler( async (req, res) => {
