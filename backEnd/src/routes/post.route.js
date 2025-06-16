@@ -13,10 +13,10 @@ const { createPost,
 
 router.use(verifyJWT);
 
-router.post('/createPost', createPost); // Add `upload.fields([...])` if you're uploading images
+router.post('/createPost', createPost); 
 router.get('/posts', getAllPosts);
 router.get('/:postId', getPostById);
-router.put('/:postId', Upload.none(), updatePost); // Or use upload.fields() for media
+router.patch('/:postId', updatePost);
 router.delete('/:postId', deletePost);
 router.get('/user/:userId', getPostsByUser);
 

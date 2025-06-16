@@ -8,6 +8,7 @@ const { Like } = require('../models/like.model.js');
 const { Comment } = require('../models/comment.model.js');
 const { z } = require('zod');
 const { uploadOnCloudinary } = require('../utils/cloudinary.js');
+const { isValidObjectId } = require('mongoose');
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -329,6 +330,10 @@ const getUserById = asyncHandler( async (req, res) => {
 
     const{ userId } = req.params;
 
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(401, "Invalid user Id");
+    }
+
     const user = await User.findById(userId);
 
     if (!user) {
@@ -450,6 +455,10 @@ const searchUsers = asyncHandler ( async (req, res) => {
     // else through error
 
     const { userId } = req.params;
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(401, "Invalid user Id");
+    }
 
     const user = await User.findById(userId);
 
