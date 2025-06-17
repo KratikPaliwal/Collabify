@@ -13,7 +13,7 @@ router.use(verifyJWT);
 router.post('/post/:postId', addComment);
 router.delete('/:commentId', deleteComment);
 router.get('/post/:postId', getCommentByPosts);
-router.put('/:commentId', updateComment);
+router.patch('/:commentId', updateComment);
 
 module.exports = {
     commentRouter : router

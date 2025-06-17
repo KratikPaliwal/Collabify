@@ -231,7 +231,7 @@ const deletePost = asyncHandler( async (req, res) => {
 
     await Like.deleteMany({ postId });
 
-    await Post.deleteOne();
+    await post.deleteOne();
 
     return res.status(200).json(
         new ApiResponse(
