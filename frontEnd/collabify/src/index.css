@@ -14,3 +14,38 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Custom Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Firefox Scrollbar Support */
+@layer base {
+  .custom-scrollbar {
+    scrollbar-width: auto;
+    scrollbar-color: #ccc #f1f1f1;
+  }
+
+  .custom-scrollbar:hover {
+    scrollbar-color: #999 #f1f1f1;
+  }
+}
+
+/* Optional: Smooth scrolling on touch devices */
+.custom-scrollbar {
+  -webkit-overflow-scrolling: touch;
+}
