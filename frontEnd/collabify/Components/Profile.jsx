@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Pencil } from "lucide-react"; 
+import { Pencil } from "lucide-react";
+
 function Profile() {
   const defaultImage = "Images/profile.jpeg";
   const fileInputRef = useRef(null);
@@ -16,7 +17,6 @@ function Profile() {
       setImage(storedImage);
     }
   }, []);
-
 
   const [profileData, setProfileData] = useState({
     name: "Kratik Paliwal",
@@ -83,18 +83,28 @@ function Profile() {
             <label
               htmlFor="profileImage"
               className="absolute bottom-1 right-1 bg-blue-500 text-white text-xs px-2 py-1 rounded cursor-pointer hover:bg-blue-600"
-              onClick={() => fileInputRef.current && fileInputRef.current.click()}
+              onClick={() =>
+                fileInputRef.current && fileInputRef.current.click()
+              }
             >
               Change
             </label>
           </div>
 
-          {/* Profile Info */}
-          <div className="ml-6 space-y-1 text-black">
-            <div className="text-xl font-semibold">{profileData.name}</div>
-            <div className="text-md">{profileData.headline}</div>
-            <div className="text-sm">Skills: {profileData.skills}</div>
-            <div className="text-sm">Location: {profileData.location}</div>
+          {/* Profile Info - Vertically Stacked */}
+
+          <div className="ml-6 flex flex-col justify-center min-w-0 text-black">
+            <div className="text-xl font-semibold truncate">
+              {profileData.name}
+            </div>
+            <div className="text-md truncate">{profileData.headline}</div>
+            <div className="text-sm mt-1">
+              Skills:{" "}
+              <span className="block whitespace-pre-wrap break-words max-w-lg">
+                {profileData.skills}
+              </span>
+            </div>
+            <div className="text-sm mt-1">Location: {profileData.location}</div>
           </div>
 
           {/* Edit Button */}
@@ -110,7 +120,7 @@ function Profile() {
 
       {/* Image Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
             <h2 className="text-lg font-semibold mb-4">Update Profile Photo</h2>
             <input
@@ -146,7 +156,7 @@ function Profile() {
 
       {/* Edit Form Modal */}
       {showEditForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white text-black p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
 
@@ -186,7 +196,10 @@ function Profile() {
             </div>
 
             <div className="mb-3">
-              <label className="block text-sm font-medium mb-1" htmlFor="skills">
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor="skills"
+              >
                 Skills
               </label>
               <input

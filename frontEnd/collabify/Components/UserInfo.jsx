@@ -83,7 +83,7 @@ function UserInfo() {
 
       {/* Floating Post Editor */}
       {isEditorOpen && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-2xl bg-white shadow-xl rounded-xl p-6">
+        <div className="fixed top-22 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-2xl bg-white shadow-xl rounded-xl p-6">
           {/* Close Button */}
           <button
             onClick={() => {
@@ -144,7 +144,7 @@ function UserInfo() {
 
       {/* Display Posts on Home Feed */}
 {/* Display Posts on Home Feed */}
-<div className="w-full flex justify-center mt-8">
+<div className="w-full flex justify-center mt-3">
   <div className="w-full max-w-xl space-y-4 overflow-y-auto pr-2">
     {posts.map((post) => (
       <div
