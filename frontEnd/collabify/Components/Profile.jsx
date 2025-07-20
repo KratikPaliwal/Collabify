@@ -5,7 +5,7 @@ function Profile() {
   const defaultImage = "Images/profile.jpeg";
   const fileInputRef = useRef(null);
 
-  // Load profile data and image from localStorage if available
+
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
     const storedImage = localStorage.getItem("profileImage");
