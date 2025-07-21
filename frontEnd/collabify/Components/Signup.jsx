@@ -72,58 +72,65 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 mt-10">
       <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-blue-600">Sign Up</h2>
+         
+        <h2 className="text-2xl font-bold mb-4 text-blue-600" >Sign Up</h2>
+        <div className='text-black mb-2'>Join Collabify and start buliding</div>
 
         <form onSubmit={handleSignup}>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Full Name</label>
+            <label className="text-gray-700 mb-2 flex">Full Name</label>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               className="w-full border border-gray-300 rounded px-3 py-2 text-black"
+              placeholder='Enter your full name'
               required
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Username</label>
+            <label className="flex text-gray-700 mb-2 ">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full border border-gray-300 rounded px-3 py-2 text-black"
+              placeholder='Enter your full name'
+              
               required
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Email</label>
+            <label className=" text-gray-700 mb-2 flex">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 rounded px-3 py-2 text-black"
+              placeholder='Enter your email'
               required
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Password</label>
+            <label className="flex text-gray-700 mb-2 ">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-300 rounded px-3 py-2 text-black"
+              placeholder='Create a password'
               required
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Bio</label>
+            <label className="flex text-gray-700 mb-2 ">Bio</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
@@ -135,7 +142,7 @@ export default function Signup() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Skills (Maximum 3)</label>
+            <label className="flex text-gray-700 mb-2">Skills (Maximum 3)</label>
             <div className="space-y-2">
               {skills.map((skill, index) => (
                 <div key={index} className="flex gap-2">
@@ -150,7 +157,7 @@ export default function Signup() {
                     <button
                       type="button"
                       onClick={() => removeSkill(index)}
-                      className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                      className="px-3 py-2 bg-red-500 text-red rounded-xl hover:bg-red-400 w-10"
                     >
                       ×
                     </button>
@@ -162,7 +169,7 @@ export default function Signup() {
               <button
                 type="button"
                 onClick={addSkill}
-                className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+                className="mt-2 px-4 py-2 bg-green-500 text-white rounded-2xl hover:bg-green-600 text-sm flex "
               >
                 + Add Skill
               </button>
@@ -170,14 +177,14 @@ export default function Signup() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Avatar</label>
+            <label className="flex text-gray-700 mb-2">Avatar</label>
             <input
               type="file"
               accept="image/*"
               onChange={(e) => setAvatar(e.target.files[0])}
               className="w-full border border-gray-300 rounded px-3 py-2 text-black file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
             />
-            <div className="text-sm text-gray-500 mt-1">Upload an image file (JPG, PNG, GIF)</div>
+            <div className="text-sm text-gray-500 mt-1">Upload an image file (JPG, PNG)</div>
           </div>
 
           <button
