@@ -18,17 +18,23 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    const newUser = {
-      username,
-      email,
-      password,
-      fullName,
-      bio,
-      skills,
-      avatar
-    }
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('fullName', fullName);
+    formData.append('bio', bio);
+    formData.append('skills', skills.join(','));
+    formData.append('avatar', avatar);
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, 
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
 
     if (response.status === 200) {
       const data = response.data;
