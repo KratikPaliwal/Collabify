@@ -11,8 +11,8 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+    <div className="min-h-screen flex items-center justify-center w-full absolute left-0 bg-gradient-to-br from-cyan-400 to-orange-400">
+      <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg w-96 border border-white/20">
         <h1 className='text-blue-600 text-2xl font-bold'>Collabify</h1>
         <h2 className="text-xl font-bold mb-4 text-black">Login</h2>
         <form onSubmit={handleLogin}>

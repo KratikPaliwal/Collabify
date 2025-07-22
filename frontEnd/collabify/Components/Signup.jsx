@@ -72,92 +72,91 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 mt-10">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-         
-        <h2 className="text-2xl font-bold mb-4 text-blue-600" >Sign Up</h2>
-        <div className='text-black mb-2'>Join Collabify and start buliding</div>
+    <div className="min-h-screen w-full absolute top-0 left-0 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-orange-400 mt-10 ">
+      <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg w-96 border border-white/20">
 
-        <form onSubmit={handleSignup}>
+        <h2 className="text-3xl font-extrabold mb-2 text-blue-700 text-center mt-10">Sign Up</h2>
+        <p className='text-center text-gray-600 mb-6'>Join Collabify and start building</p>
 
-          <div className="mb-4">
-            <label className="text-gray-700 mb-2 flex">Full Name</label>
+        <form onSubmit={handleSignup} className="space-y-5">
+
+          <div>
+            <label className="text-black text-sm font-medium flex ">Full Name</label>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-black"
-              placeholder='Enter your full name'
+              className="w-full mt-1 border border-gray-300 rounded-lg px-4 py-2 text-black focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              placeholder='John Doe'
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label className="flex text-gray-700 mb-2 ">Username</label>
+          <div>
+            <label className="text-black text-sm font-medium flex">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-black"
-              placeholder='Enter your full name'
-              
+              className="w-full mt-1 border border-gray-300 rounded-lg px-4 py-2 text-black focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              placeholder='johndoe123'
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label className=" text-gray-700 mb-2 flex">Email</label>
+          <div>
+            <label className="text-black text-sm font-medium flex ">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-black"
-              placeholder='Enter your email'
+              className="w-full mt-1 border border-gray-300 rounded-lg px-4 py-2 text-black focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              placeholder='john@example.com'
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label className="flex text-gray-700 mb-2 ">Password</label>
+          <div>
+            <label className="text-black text-sm font-medium flex">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-black"
-              placeholder='Create a password'
+              className="w-full mt-1 border border-gray-300 rounded-lg px-4 py-2 text-black focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              placeholder='********'
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label className="flex text-gray-700 mb-2 ">Bio</label>
+          <div>
+            <label className="text-black text-sm font-medium flex">Bio</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-black h-20 resize-none"
+              className="w-full mt-1 border border-gray-300 rounded-lg px-4 py-2 text-black h-20 resize-none focus:ring-2 focus:ring-blue-400 focus:outline-none"
               placeholder="Tell us about yourself..."
               maxLength={200}
             />
-            <div className="text-sm text-gray-500 mt-1">{bio?.length || 0}/200 characters</div>
+            <div className="text-xs text-gray-500 mt-1 text-right">{bio?.length || 0}/200 characters</div>
           </div>
 
-          <div className="mb-4">
-            <label className="flex text-gray-700 mb-2">Skills (Maximum 3)</label>
-            <div className="space-y-2">
+          <div>
+            <label className="text-black text-sm font-medium flex">Skills (Max 3)</label>
+            <div className="space-y-2 mt-1">
               {skills.map((skill, index) => (
                 <div key={index} className="flex gap-2">
                   <input
                     type="text"
                     value={skill}
                     onChange={(e) => handleSkillChange(index, e.target.value)}
-                    className="flex-1 border border-gray-300 rounded px-3 py-2 text-black"
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-black focus:ring-2 focus:ring-blue-400 focus:outline-none"
                     placeholder={`Skill ${index + 1}`}
                   />
                   {skills.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeSkill(index)}
-                      className="px-3 py-2 bg-red-500 text-red rounded-xl hover:bg-red-400 w-10"
+                      className="px-3 py-2 bg-red-500 text-white rounded-full hover:bg-red-400 transition-all duration-300 ease-in-out"
                     >
                       ×
                     </button>
@@ -169,35 +168,42 @@ export default function Signup() {
               <button
                 type="button"
                 onClick={addSkill}
-                className="mt-2 px-4 py-2 bg-green-500 text-white rounded-2xl hover:bg-green-600 text-sm flex "
+                className="mt-2 px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 text-sm flex "
               >
                 + Add Skill
               </button>
             )}
           </div>
 
-          <div className="mb-4">
-            <label className="flex text-gray-700 mb-2">Avatar</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setAvatar(e.target.files[0])}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-black file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            <div className="text-sm text-gray-500 mt-1">Upload an image file (JPG, PNG)</div>
+          <div>
+            <label className="text-gray-700 text-sm font-medium">Avatar</label>
+            <label
+              htmlFor="avatar-upload"
+              className="mt-1 flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer text-gray-500 hover:bg-gray-50 text-sm transition"
+            >
+              Click or drag and drop the file here
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setAvatar(e.target.files[0])}
+                className="hidden"
+              />
+            </label>
+            <div className="text-xs text-gray-500 mt-1">Upload JPG or PNG image</div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold "
           >
             Sign Up
           </button>
         </form>
 
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-5 text-sm text-gray-600 text-center">
           Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 hover:underline font-medium">
             Login
           </Link>
         </p>
