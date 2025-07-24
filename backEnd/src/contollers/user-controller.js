@@ -139,16 +139,16 @@ const loginUser = asyncHandler (async (req, res) => {
     // agr hai toh user ke access token aur refresh token generate kr denge
     // send cookie
 
-    const { email, username, password } = req.body;
+    const { email , password } = req.body;
 
     // then check ki email ya username mai koi bgi ek aaya ho
-    if (!email || !username) {
-        throw new ApiError(400, 'username and email are required');
+    if (!email) {
+        throw new ApiError(400, 'email are required');
     }
 
     // ab user ko find kre gai
     const user = await User.findOne({
-        $or : [{username}, {email}]
+        email
     });
 
     // check ki user mila ya nhi
@@ -167,7 +167,7 @@ const loginUser = asyncHandler (async (req, res) => {
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
     // user ko updated info denge
-    const loggesUser = await User.findById(user._id).select(
+    const loggedUser = await User.findById(user._id).select(
         "-password -refreshToken"
     );
 
@@ -181,7 +181,7 @@ const loginUser = asyncHandler (async (req, res) => {
         new ApiResponse(
             200,
             {
-                user : loggesUser, accessToken,
+                user : loggedUser, accessToken,
                 refreshToken,
             },
             'User loggedIn successfully'

@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserDataContext } from '../contexts/UserContext';
+import axios from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+  const {user, setUser} = useContext(UserDataContext);
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    alert("Logged in successfully!");
+    // alert("Logged in successfully!");
+
+    const newUser = {
+      email : email,
+      password : password
+    }
+
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, newUser);
+
+    if (response.status === 200) {
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem('token', data.accessToken);
+      navigate('/');
+    }
+
+    setEmail("");
+    setPassword('');
   };
 
   return (
@@ -15,6 +37,7 @@ export default function Login() {
       <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg w-96 border border-white/20">
         <h1 className='text-blue-600 text-2xl font-bold'>Collabify</h1>
         <h2 className="text-xl font-bold mb-4 text-black">Login</h2>
+        
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-gray-700 mb-2 relative mr-68">Email</label>
@@ -22,7 +45,7 @@ export default function Login() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-black"
               required
             />
           </div>
@@ -32,7 +55,7 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-black"
               required
             />
           </div>

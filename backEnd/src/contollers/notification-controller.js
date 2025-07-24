@@ -4,7 +4,7 @@ const { ApiResponse } = require('../utils/ApiResponse.js');
 const { Notification } = require('../models/notification.model.js');
 
 const createNotification = asyncHandler( async (req, res) => {
-
+    
 })
 
 const getUserNotifications = asyncHandler( async (req, res) => {
@@ -20,7 +20,7 @@ const deleteNotification = asyncHandler( async (req, res) => {
 })
 
 const clearAllNotitcation = asyncHandler( async (req, res) => {
-
+    
 })
 
 module.exports = {
