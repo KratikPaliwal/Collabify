@@ -18,38 +18,44 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('fullName', fullName);
-    formData.append('bio', bio);
-    formData.append('skills', skills.join(','));
-    formData.append('avatar', avatar);
-
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, 
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+    try {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('fullName', fullName);
+      formData.append('bio', bio);
+      formData.append('skills', skills.join(','));
+      formData.append('avatar', avatar);
+  
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, 
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
+      );
+  
+      if (response.status === 200) {
+        const data = response.data;
+        setUser(data.user);
+        localStorage.setItem('token', data.token);
+        navigate('/');
       }
-    );
-
-    if (response.status === 200) {
-      const data = response.data;
-      setUser(data.user);
-      localStorage.setItem('token', data.token);
-      navigate('/');
+  
+      // Clear form after successful signup
+      setEmail('');
+      setBio('');
+      setSkills(['']);
+      setPassword('');
+      setFullName('');
+      setUsername('');
+      setAvatar(null);
+      
+    }catch (error) {
+      console.error("Signup failed:", error);
     }
-
-    setEmail('');
-    setBio('');
-    setSkills(null);
-    setPassword('');
-    setFullName('');
-    setUsername('');
-    setAvatar(null);
   };
 
   const handleSkillChange = (index, value) => {

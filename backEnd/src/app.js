@@ -15,7 +15,10 @@ const { inviteRouter } = require('./routes/invite.route.js');
 const { commentRouter } = require('./routes/comment.routes.js');
 
 // configuration -> Middleware
-app.use(cors());
+app.use(cors({
+    origin : '*',
+    credentials : true
+}));
 
 
 // to parse incoming request with content and makes them in json of req.body

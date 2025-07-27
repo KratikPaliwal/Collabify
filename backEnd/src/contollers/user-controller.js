@@ -46,6 +46,7 @@ const registerUser = asyncHandler (async(req, res) => {
     // remove password andrefreshToken from that
     // check ki user create hua ya nhi
     // return response
+    console.log("In register route");
 
     const { username, fullName, password, email, bio, skills } = req.body;
 
