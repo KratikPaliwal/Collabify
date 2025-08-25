@@ -1,30 +1,63 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+// src/AuthContext.jsx
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+const AuthContext = createContext({
+  user: null,
+  loading: true,
+  login: () => {},
+  logout: () => {},
+});
 
 export const AuthProvider = ({ children }) => {
-  // Load user state from localStorage if available
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("user");
+      if (raw && raw !== "undefined" && raw !== "null") {
+        const parsed = JSON.parse(raw);
+        setUser(parsed);
+      } else {
+        // cleanup any invalid entries
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+      }
+    } catch (err) {
+      console.warn("AuthContext: invalid user in localStorage, clearing it.", err);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const login = (userData, token) => {
+    setUser(userData ?? null);
+    try {
+      if (userData) localStorage.setItem("user", JSON.stringify(userData));
+      if (token) localStorage.setItem("token", token);
+    } catch (err) {
+      console.warn("AuthContext: failed to persist user/token", err);
+    }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    try {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    } catch (err) {
+      console.warn("AuthContext: failed to clear localStorage", err);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use auth context
 export const useAuth = () => useContext(AuthContext);

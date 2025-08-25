@@ -1,6 +1,33 @@
+/* Ensure full height of viewport */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Center content horizontally, but allow full vertical height */
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 1rem; /* horizontal padding only */
+  height: 100%;    /* <-- important */
+}
+
+/* Flex layout for app */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%; /* fill #root */
+}
+
+/* Main content grows to push footer down */
+.content {
+  flex: 1;
+}
+
+/* Footer styling */
+footer {
+  background-color: #f3f3f3;
+  padding: 1rem;
   text-align: center;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
