@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { FaUser, FaBell } from "react-icons/fa";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../src/AuthContext"; // <- exactly this path
+import { useAuth } from "../src/AuthContext"; 
 
 function Header() {
   const { user, logout, loading } = useAuth();
@@ -34,22 +34,49 @@ function Header() {
       </div>
 
       <div className="flex gap-6 items-center text-gray-700">
-        <NavLink to="/" className={({ isActive }) => (isActive ? "text-blue-600 font-medium" : "text-black")}>Home</NavLink>
-        <NavLink to="/project" className={({ isActive }) => (isActive ? "text-blue-600 font-medium" : "text-black")}>Project</NavLink>
+        <NavLink 
+          to="/" 
+          className={({ isActive }) => (isActive ? "text-blue-600 font-medium" : "text-black")}
+        >
+          Home
+        </NavLink>
+        <NavLink 
+          to="/project" 
+          className={({ isActive }) => (isActive ? "text-blue-600 font-medium" : "text-black")}
+        >
+          Project
+        </NavLink>
 
+        {/* Notification Bell */}
         <div className="relative inline-block">
           <div className="hover:text-blue-500 hover:bg-gray-100 hover:scale-105 transition rounded-full p-2 relative">
             <FaBell className="text-[20px]" />
           </div>
-          <span className="absolute top-1 right-1 bg-red-500 text-white text-[10px] px-[6px] py-[1px] rounded-full">1</span>
+          <span className="absolute top-1 right-1 bg-red-500 text-white text-[10px] px-[6px] py-[1px] rounded-full">
+            1
+          </span>
         </div>
 
+        {/* User Auth Section */}
         {user ? (
           <div className="relative">
-            <button onClick={() => setShowProfileMenu(!showProfileMenu)} className="hover:bg-gray-100 rounded-full p-2 transition" aria-label="User menu">
-              <FaUser className="text-[20px]" />
+            <button 
+              onClick={() => setShowProfileMenu(!showProfileMenu)} 
+              className="hover:bg-gray-100 rounded-full p-1 transition flex items-center justify-center"
+              aria-label="User menu"
+            >
+              {user.avatar ? (
+                <img
+                  src={user.avatar} 
+                  alt="User Avatar"
+                  className="w-8 h-8 rounded-full object-cover border"
+                />
+              ) : (
+                <FaUser className="text-[20px]" />
+              )}
             </button>
 
+            {/* Dropdown Menu */}
             {showProfileMenu && (
               <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md py-2 z-10 border border-gray-200">
                 <div className="px-4 py-2 border-b border-gray-200 text-sm text-gray-700">
@@ -57,16 +84,29 @@ function Header() {
                   <p className="text-xs text-gray-500 truncate">{user.email || ""}</p>
                 </div>
 
-                <Link to="/user" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">Profile</Link>
-                <Link to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">Settings</Link>
-                <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">Logout</button>
+                <Link to="/user" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
+                  Profile
+                </Link>
+                <Link to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
+                  Settings
+                </Link>
+                <button 
+                  onClick={handleLogout} 
+                  className="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm"
+                >
+                  Logout
+                </button>
               </div>
             )}
           </div>
         ) : (
           <div className="flex gap-2">
-            <Link to="/login" className="text-blue-600 hover:underline text-sm font-medium">Login</Link>
-            <Link to="/signup" className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition">Sign Up</Link>
+            <Link to="/login" className="text-blue-600 hover:underline text-sm font-medium">
+              Login
+            </Link>
+            <Link to="/signup" className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition">
+              Sign Up
+            </Link>
           </div>
         )}
       </div>

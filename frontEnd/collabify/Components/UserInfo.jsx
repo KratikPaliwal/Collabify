@@ -1,6 +1,8 @@
 import React, { useState, useRef, useLayoutEffect } from "react";
+import { useAuth } from "../src/AuthContext"; 
 
 function UserInfo() {
+  const { user } = useAuth();
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [posts, setPosts] = useState([]);
@@ -18,6 +20,10 @@ function UserInfo() {
       expanded: false,
       likes: 0,
       comments: [],
+      author: {
+        name: user?.fullName || user?.username || "User",
+        avatar: user?.avatar || "Images/profile.jpeg",
+      },
     };
 
     setPosts([newPost, ...posts]); // Prepend to home feed
@@ -49,7 +55,7 @@ function UserInfo() {
     const newComment = {
       id: Date.now(),
       text: commentText.trim(),
-      author: "You",
+      author: user?.fullName || user?.username || "You",
     };
 
     setPosts((prevPosts) =>
@@ -64,10 +70,10 @@ function UserInfo() {
   return (
     <>
       {/* Input Box (Write a Post Trigger) */}
-      <div className="w-full flex justify-center mt-16">
+      <div className="w-full flex justify-center mt-22">
         <div className="bg-white shadow-md rounded-xl p-4 w-full max-w-xl flex items-center space-x-4">
           <img
-            src="Images/profile.jpeg"
+            src={user?.avatar || "Images/profile.jpeg"} // ✅ dynamic profile
             alt="Profile"
             className="w-10 h-10 rounded-full object-cover"
           />
@@ -98,12 +104,14 @@ function UserInfo() {
           {/* Header */}
           <div className="flex items-center space-x-3 mb-4">
             <img
-              src="Images/profile.jpeg"
+              src={user?.avatar || "Images/profile.jpeg"} // ✅ dynamic avatar
               alt="Profile"
               className="w-12 h-12 rounded-full object-cover"
             />
             <div>
-              <h2 className="font-semibold text-gray-800">Kratik Paliwal</h2>
+              <h2 className="font-semibold text-gray-800">
+                {user?.fullName || user?.username || "User"} {/* ✅ dynamic name */}
+              </h2>
             </div>
           </div>
 
@@ -143,94 +151,93 @@ function UserInfo() {
       )}
 
       {/* Display Posts on Home Feed */}
-{/* Display Posts on Home Feed */}
-<div className="w-full flex justify-center mt-3">
-  <div className="w-full max-w-xl space-y-4 overflow-y-auto pr-2">
-    {posts.map((post) => (
-      <div
-        key={post.id}
-        className="bg-white shadow-md rounded-xl p-4 text-gray-800 mx-auto"
-      >
-        {/* Profile + Name Row */}
-        <div className="flex items-center space-x-3 mb-2">
-          <img
-            src="Images/profile.jpeg"
-            alt="Profile"
-            className="w-10 h-10 rounded-full object-cover"
-          />
-          <h3 className="font-semibold">Kratik Paliwal</h3>
-        </div>
-
-        {/* Post Content - Left Aligned */}
-        <div className="text-left">
-          <LineClampedText post={post} toggleExpand={toggleExpand} />
-        </div>
-
-        {/* Like & Comment Section */}
-        <div className="mt-2 pt-2 border-t border-gray-200">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => toggleLike(post.id)}
-              className={`flex items-center space-x-1 transition-transform duration-200 ${
-                post.liked ? "text-red-500 scale-110" : "text-gray-500"
-              }`}
+      <div className="w-full flex justify-center mt-3">
+        <div className="w-full max-w-xl space-y-4 overflow-y-auto pr-2">
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-white shadow-md rounded-xl p-4 text-gray-800 mx-auto"
             >
-              <span
-                className={`transform transition-all duration-200 ${
-                  post.liked ? "scale-125" : "scale-100"
-                }`}
-              >
-                ❤️
-              </span>
-              <span className="text-sm">{post.likes} Likes</span>
-            </button>
-          </div>
-
-          {/* Comments Section */}
-          <div className="mt-3 space-y-2 text-left">
-            {/* Add Comment Form */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const input = e.target.commentInput;
-                addComment(post.id, input.value);
-                input.value = "";
-              }}
-              className="flex space-x-2"
-            >
-              <input
-                name="commentInput"
-                type="text"
-                placeholder="Add a comment..."
-                className="flex-1 border border-gray-300 rounded-full px-4 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <button
-                type="submit"
-                className="text-sm bg-blue-600 text-white px-4 py-1 rounded-full hover:bg-blue-700"
-              >
-                Post
-              </button>
-            </form>
-
-            {/* Display Comments */}
-            {post.comments.length > 0 && (
-                <div className="space-y-2 mt-2">
-                {post.comments.map((comment) => (
-                  <div
-                    key={comment.id}
-                    className="text-xs bg-gray-100 p-2 rounded-lg w-full"
-                  >
-                    <strong>{comment.author}</strong>: {comment.text}
-                  </div>
-                ))}
+              {/* Profile + Name Row */}
+              <div className="flex items-center space-x-3 mb-2">
+                <img
+                  src={post.author.avatar}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <h3 className="font-semibold">{post.author.name}</h3>
               </div>
-            )}
-          </div>
+
+              {/* Post Content - Left Aligned */}
+              <div className="text-left">
+                <LineClampedText post={post} toggleExpand={toggleExpand} />
+              </div>
+
+              {/* Like & Comment Section */}
+              <div className="mt-2 pt-2 border-t border-gray-200">
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => toggleLike(post.id)}
+                    className={`flex items-center space-x-1 transition-transform duration-200 ${
+                      post.liked ? "text-red-500 scale-110" : "text-gray-500"
+                    }`}
+                  >
+                    <span
+                      className={`transform transition-all duration-200 ${
+                        post.liked ? "scale-125" : "scale-100"
+                      }`}
+                    >
+                      ❤️
+                    </span>
+                    <span className="text-sm">{post.likes} Likes</span>
+                  </button>
+                </div>
+
+                {/* Comments Section */}
+                <div className="mt-3 space-y-2 text-left">
+                  {/* Add Comment Form */}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const input = e.target.commentInput;
+                      addComment(post.id, input.value);
+                      input.value = "";
+                    }}
+                    className="flex space-x-2"
+                  >
+                    <input
+                      name="commentInput"
+                      type="text"
+                      placeholder="Add a comment..."
+                      className="flex-1 border border-gray-300 rounded-full px-4 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                    <button
+                      type="submit"
+                      className="text-sm bg-blue-600 text-white px-4 py-1 rounded-full hover:bg-blue-700"
+                    >
+                      Post
+                    </button>
+                  </form>
+
+                  {/* Display Comments */}
+                  {post.comments.length > 0 && (
+                    <div className="space-y-2 mt-2">
+                      {post.comments.map((comment) => (
+                        <div
+                          key={comment.id}
+                          className="text-xs bg-gray-100 p-2 rounded-lg w-full"
+                        >
+                          <strong>{comment.author}</strong>: {comment.text}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
     </>
   );
 }
